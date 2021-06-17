@@ -94,7 +94,7 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 name = "click"
 version = "7.1.2"
 description = "Composable command line interface toolkit"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
@@ -141,6 +141,21 @@ sqlparse = ">=0.2.2"
 [package.extras]
 argon2 = ["argon2-cffi (>=16.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "django-click"
+version = "2.2.0"
+description = "Build Django management commands using the click CLI package."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+click = ">=7.1,<7.2"
+
+[package.extras]
+dev = ["fabric", "sphinx", "check-manifest", "flake8", "livereload", "mccabe", "pep8", "pep8-naming", "pyflakes", "sphinx-autobuild", "sphinx-rtd-theme", "wheel"]
+test = ["coverage (<5)", "pytest", "pytest-cov", "pytest-django", "pytest-flake8"]
 
 [[package]]
 name = "django-coverage-plugin"
@@ -239,19 +254,27 @@ requirements = ["pipreqs", "pip-api"]
 xdg_home = ["appdirs (>=1.4.0)"]
 
 [[package]]
+name = "iterfzf"
+version = "0.5.0.20.0"
+description = "Pythonic interface to fzf"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
+
+[[package]]
 name = "jedi"
-version = "0.16.0"
+version = "0.18.0"
 description = "An autocompletion tool for Python that can be used for text editors."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.6"
 
 [package.dependencies]
-parso = ">=0.5.2"
+parso = ">=0.8.0,<0.9.0"
 
 [package.extras]
-qa = ["flake8 (==3.7.9)"]
-testing = ["colorama (==0.4.1)", "docopt", "pytest (>=3.9.0,<5.0.0)"]
+qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
+testing = ["Django (<3.1)", "colorama", "docopt", "pytest (<6.0.0)"]
 
 [[package]]
 name = "lazy-object-proxy"
@@ -315,14 +338,15 @@ six = "*"
 
 [[package]]
 name = "parso"
-version = "0.6.2"
+version = "0.8.2"
 description = "A Python Parser"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=3.6"
 
 [package.extras]
-testing = ["docopt", "pytest (>=3.0.7)"]
+qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
+testing = ["docopt", "pytest (<6.0.0)"]
 
 [[package]]
 name = "pathspec"
@@ -416,6 +440,19 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "pudb"
+version = "2021.1"
+description = "A full-screen, console-based Python debugger"
+category = "dev"
+optional = false
+python-versions = "~=3.6"
+
+[package.dependencies]
+jedi = ">=0.18,<1"
+pygments = ">=2.7.4"
+urwid = ">=1.1.1"
+
+[[package]]
 name = "py"
 version = "1.9.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
@@ -425,11 +462,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "pygments"
-version = "2.4.2"
+version = "2.9.0"
 description = "Pygments is a syntax highlighting package written in Python."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.5"
 
 [[package]]
 name = "pylint"
@@ -629,6 +666,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "urwid"
+version = "2.1.2"
+description = "A full-featured console (xterm et al.) user interface library"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "wcwidth"
 version = "0.1.7"
 description = "Measures number of Terminal column cells of wide-character codes"
@@ -662,7 +707,7 @@ testing = ["pathlib2", "contextlib2", "unittest2"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "60fdcd0d2512e72837f2cd661c75e12776a63d476b79c6529fd847396d4226fc"
+content-hash = "0d2cb967d2c9092138e4ee73b534db89ccbdc595c7cde3c4120f1bb12bce5719"
 
 [metadata.files]
 appdirs = [
@@ -766,6 +811,10 @@ django = [
     {file = "Django-3.1.4-py3-none-any.whl", hash = "sha256:5c866205f15e7a7123f1eec6ab939d22d5bde1416635cab259684af66d8e48a2"},
     {file = "Django-3.1.4.tar.gz", hash = "sha256:edb10b5c45e7e9c0fb1dc00b76ec7449aca258a39ffd613dbd078c51d19c9f03"},
 ]
+django-click = [
+    {file = "django-click-2.2.0.tar.gz", hash = "sha256:cd10bc23e2b49c7a934c3b20f1062ab5dbab78d72efbd316c5fd00fea51d902f"},
+    {file = "django_click-2.2.0-py2.py3-none-any.whl", hash = "sha256:159a3d411ef96c27278377b1bf5e60b5b4bcb884dbeb4b5e5efe2200ad051f5f"},
+]
 django-coverage-plugin = [
     {file = "django_coverage_plugin-1.8.0.tar.gz", hash = "sha256:d53cbf3828fd83d6b89ff7292c6805de5274e36411711692043e67bcde25ae0c"},
 ]
@@ -793,9 +842,18 @@ isort = [
     {file = "isort-4.3.21-py2.py3-none-any.whl", hash = "sha256:6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"},
     {file = "isort-4.3.21.tar.gz", hash = "sha256:54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1"},
 ]
+iterfzf = [
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-macosx_10_10_i386.macosx_10_11_i386.macosx_10_12_i386.whl", hash = "sha256:eb6279465a8384c61c4a08867de65babca6584eabc620847ba7ce5b8afe59ae7"},
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-macosx_10_10_intel.macosx_10_10_x86_64.macosx_10_11_intel.macosx_10_11_x86_64.macosx_10_12_intel.macosx_10_12_x86_64.whl", hash = "sha256:ebf54265e70154d166d6e56f9314a375ce8752937e6faf6f4fd72477472772f6"},
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-manylinux1_i686.whl", hash = "sha256:5d19abc3e4ae31af575835e4ffa0215327864a5123d200682e9d68dc2166558d"},
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:1461f482949d6b0441031722f101c44ac74e60cc3f5b04a9568b3da5aac8a7f2"},
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-win32.whl", hash = "sha256:c95f3c9b96eb6c84db13cadb75d8d8c1d417670f87e23aeb363dbf4b777374fe"},
+    {file = "iterfzf-0.5.0.20.0-py2.py3-none-win_amd64.whl", hash = "sha256:615d4b8aef12717774254c8b656cc8d0ff94b3651cd77359478d7d0646d69f6e"},
+    {file = "iterfzf-0.5.0.20.0.tar.gz", hash = "sha256:2b6f04d87a7cba79d03c2bb83575bb4580f47502dc024a24fc5dc8c0cfbcc52f"},
+]
 jedi = [
-    {file = "jedi-0.16.0-py2.py3-none-any.whl", hash = "sha256:b4f4052551025c6b0b0b193b29a6ff7bdb74c52450631206c262aef9f7159ad2"},
-    {file = "jedi-0.16.0.tar.gz", hash = "sha256:d5c871cb9360b414f981e7072c52c33258d598305280fef91c6cae34739d65d5"},
+    {file = "jedi-0.18.0-py2.py3-none-any.whl", hash = "sha256:18456d83f65f400ab0c2d3319e48520420ef43b23a086fdc05dff34132f0fb93"},
+    {file = "jedi-0.18.0.tar.gz", hash = "sha256:92550a404bad8afed881a137ec9a461fed49eca661414be45059329614ed0707"},
 ]
 lazy-object-proxy = [
     {file = "lazy-object-proxy-1.4.3.tar.gz", hash = "sha256:f3900e8a5de27447acbf900b4750b0ddfd7ec1ea7fbaf11dfa911141bc522af0"},
@@ -853,8 +911,8 @@ packaging = [
     {file = "packaging-19.2.tar.gz", hash = "sha256:28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47"},
 ]
 parso = [
-    {file = "parso-0.6.2-py2.py3-none-any.whl", hash = "sha256:8515fc12cfca6ee3aa59138741fc5624d62340c97e401c74875769948d4f2995"},
-    {file = "parso-0.6.2.tar.gz", hash = "sha256:0c5659e0c6eba20636f99a04f469798dca8da279645ce5c387315b2c23912157"},
+    {file = "parso-0.8.2-py2.py3-none-any.whl", hash = "sha256:a8c4922db71e4fdb90e0d0bc6e50f9b273d3397925e5e60a717e719201778d22"},
+    {file = "parso-0.8.2.tar.gz", hash = "sha256:12b83492c6239ce32ff5eed6d3639d6a536170723c6f3f1506869f1ace413398"},
 ]
 pathspec = [
     {file = "pathspec-0.7.0-py2.py3-none-any.whl", hash = "sha256:163b0632d4e31cef212976cf57b43d9fd6b0bac6e67c26015d611a647d5e7424"},
@@ -888,13 +946,16 @@ ptyprocess = [
     {file = "ptyprocess-0.6.0-py2.py3-none-any.whl", hash = "sha256:d7cc528d76e76342423ca640335bd3633420dc1366f258cb31d05e865ef5ca1f"},
     {file = "ptyprocess-0.6.0.tar.gz", hash = "sha256:923f299cc5ad920c68f2bc0bc98b75b9f838b93b599941a6b63ddbc2476394c0"},
 ]
+pudb = [
+    {file = "pudb-2021.1.tar.gz", hash = "sha256:309ee82b45a0ffca0bc4c7f521fd3e357589c764f339bdf9dcabb7ad40692d6e"},
+]
 py = [
     {file = "py-1.9.0-py2.py3-none-any.whl", hash = "sha256:366389d1db726cd2fcfc79732e75410e5fe4d31db13692115529d34069a043c2"},
     {file = "py-1.9.0.tar.gz", hash = "sha256:9ca6883ce56b4e8da7e79ac18787889fa5206c79dcc67fb065376cd2fe03f342"},
 ]
 pygments = [
-    {file = "Pygments-2.4.2-py2.py3-none-any.whl", hash = "sha256:71e430bc85c88a430f000ac1d9b331d2407f681d6f6aec95e8bcfbc3df5b0127"},
-    {file = "Pygments-2.4.2.tar.gz", hash = "sha256:881c4c157e45f30af185c1ffe8d549d48ac9127433f2c380c24b84572ad66297"},
+    {file = "Pygments-2.9.0-py3-none-any.whl", hash = "sha256:d66e804411278594d764fc69ec36ec13d9ae9147193a1740cd34d272ca383b8e"},
+    {file = "Pygments-2.9.0.tar.gz", hash = "sha256:a18f47b506a429f6f4b9df81bb02beab9ca21d0a5fee38ed15aef65f0545519f"},
 ]
 pylint = [
     {file = "pylint-2.7.2-py3-none-any.whl", hash = "sha256:d09b0b07ba06bcdff463958f53f23df25e740ecd81895f7d2699ec04bbd8dc3b"},
@@ -1019,6 +1080,9 @@ typing-extensions = [
     {file = "typing_extensions-3.7.4.1-py2-none-any.whl", hash = "sha256:910f4656f54de5993ad9304959ce9bb903f90aadc7c67a0bef07e678014e892d"},
     {file = "typing_extensions-3.7.4.1-py3-none-any.whl", hash = "sha256:cf8b63fedea4d89bab840ecbb93e75578af28f76f66c35889bd7065f5af88575"},
     {file = "typing_extensions-3.7.4.1.tar.gz", hash = "sha256:091ecc894d5e908ac75209f10d5b4f118fbdb2eb1ede6a63544054bb1edb41f2"},
+]
+urwid = [
+    {file = "urwid-2.1.2.tar.gz", hash = "sha256:588bee9c1cb208d0906a9f73c613d2bd32c3ed3702012f51efe318a3f2127eae"},
 ]
 wcwidth = [
     {file = "wcwidth-0.1.7-py2.py3-none-any.whl", hash = "sha256:f4ebe71925af7b40a864553f761ed559b43544f8f71746c2d756c7fe788ade7c"},
