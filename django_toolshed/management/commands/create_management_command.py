@@ -13,6 +13,7 @@ def command():
         command_name += ".py"
 
     path = Path(selected_app.path) / "management" / "commands" / command_name
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         f.write("""
 import djclick as click
@@ -21,6 +22,7 @@ import djclick as click
 def command():
     click.secho("Hello", fg="green")
 """)
+    click.secho(f"Created {path}", fg="green", bold=True)
 
 
 def local_apps():
