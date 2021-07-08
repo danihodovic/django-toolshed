@@ -7,6 +7,8 @@ from django.apps import apps
 def command():
     d = local_apps()
     selected_app_label = iterfzf(iter(d.keys()))
+    if not selected_app_label:
+        return
     selected_app = d[selected_app_label]
     command_name = click.prompt('Command name')
     if not command_name.endswith(".py"):
