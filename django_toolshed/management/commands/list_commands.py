@@ -1,9 +1,11 @@
-from django.core import management
 import djclick as click
+from django.core import management
 from iterfzf import iterfzf
+
 
 def format_cmd(app, command_name):
     return f"{command_name:35s}{app}"
+
 
 @click.command()
 @click.option(
