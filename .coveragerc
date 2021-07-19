@@ -1,0 +1,15 @@
+[run]
+source = .
+omit =
+    .virtualenv/*
+    .venv/*
+    */migrations/*
+    */apps.py
+    */wsgi.py
+    .poetry/*/**
+    .poetry-cache/*/**
+    */.db/*
+    ./manage.py
+
+[report]
+fail_under = 50

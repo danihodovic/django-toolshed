@@ -6,7 +6,7 @@ class DjangoToolsConfig(AppConfig):
 
     def ready(self):
         try:
-            # pylint: disable=unused-import
+            # pylint: disable=unused-import,import-outside-toplevel
             import django_toolshed.signals
         except ImportError:
             pass

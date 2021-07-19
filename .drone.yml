@@ -1,0 +1,71 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/drone-cache
+
+steps:
+  - name: restore-cache
+    image: meltwater/drone-cache:dev
+    pull: true
+    settings:
+      backend: "filesystem"
+      restore: true
+      cache_key: '{{ .Repo.Name }}_{{ checksum "poetry.lock" }}'
+      archive_format: "gzip"
+      mount:
+        - '.poetry'
+        - '.poetry-cache'
+    volumes:
+      - name: cache
+        path: /tmp/cache
+
+  - name: install-dependencies
+    depends_on: [restore-cache]
+    image: python:3.9.1
+    environment:
+      POETRY_CACHE_DIR: /drone/src/.poetry-cache
+      POETRY_VIRTUALENVS_IN_PROJECT: 'false'
+    commands:
+      - |
+        export POETRY_HOME=$DRONE_WORKSPACE/.poetry
+        if [ ! -d "$POETRY_HOME" ]; then
+          curl -fsS -o /tmp/get-poetry.py https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+          python /tmp/get-poetry.py -y
+        fi
+      - . .poetry/env
+      - poetry install --no-root
+
+  - name: test
+    depends_on: [install-dependencies]
+    image: python:3.9.1
+    environment:
+      POETRY_CACHE_DIR: /drone/src/.poetry-cache
+      POETRY_VIRTUALENVS_IN_PROJECT: 'false'
+      DJANGO_SETTINGS_MODULE: tests.settings
+    commands:
+      - . .poetry/env && . $(poetry env info -p)/bin/activate
+      - black . --check
+      - isort --check-only .
+      - pylint django_toolshed tests
+      - pytest --cov=tests --cov=django_toolshed tests django_toolshed
+
+  - name: rebuild-cache
+    depends_on: [install-dependencies]
+    image: meltwater/drone-cache:dev
+    pull: true
+    settings:
+      backend: "filesystem"
+      rebuild: true
+      cache_key: '{{ .Repo.Name }}_{{ checksum "poetry.lock" }}'
+      archive_format: "gzip"
+      mount:
+        - '.poetry'
+        - '.poetry-cache'
+    volumes:
+      - name: cache
+        path: /tmp/cache
