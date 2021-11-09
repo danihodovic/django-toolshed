@@ -56,3 +56,4 @@ SITE_ID = 1
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = Path(__file__).parent / "media"
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
