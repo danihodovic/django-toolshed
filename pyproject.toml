@@ -6,7 +6,7 @@ authors = ["Dani Hodovic <you@example.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 Django = "^3.1"
 ipython_genutils = "^0.2.0"
 django-click = "^2.2.0"
