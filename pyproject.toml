@@ -5,6 +5,9 @@ description = ""
 authors = ["Dani Hodovic <you@example.com>"]
 license = "MIT"
 
+[tool.poetry.scripts]
+celery-auto-app = "django_toolshed.celery_auto_app:command"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^3.1"
