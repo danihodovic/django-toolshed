@@ -1,7 +1,7 @@
 #!/usr/bin/env python
+import os
 import re
 import subprocess
-import sys
 
 import click
 
@@ -35,11 +35,7 @@ def command(celery_args):
         celery_config_line.split(":")[0].replace("/", ".").replace(".py", "")
     )
     celery_app_var = re.search(r":(\w+)\s", celery_config_line).group(1)
-    # pylint: disable=subprocess-run-check
-    result = subprocess.run(
-        ["celery", f"--app={celery_config_module}:{celery_app_var}"] + list(celery_args)
-    )
-    sys.exit(result.returncode)
+    os.execlp("celery", f"--app={celery_config_module}:{celery_app_var}", *celery_args)
 
 
 def grep_cmd():
