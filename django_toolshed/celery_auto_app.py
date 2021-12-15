@@ -35,7 +35,9 @@ def command(celery_args):
         celery_config_line.split(":")[0].replace("/", ".").replace(".py", "")
     )
     celery_app_var = re.search(r":(\w+)\s", celery_config_line).group(1)
-    os.execlp("celery", f"--app={celery_config_module}:{celery_app_var}", *celery_args)
+    celery_path = f"{celery_config_module}:{celery_app_var}"
+    click.secho(f"Automatically found celery config in {celery_path=}", fg="green")
+    os.execlp("celery", f"--app={celery_path}", *celery_args)
 
 
 def grep_cmd():
