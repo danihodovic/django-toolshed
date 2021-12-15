@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import logging
 import os
 import re
 import subprocess
@@ -36,7 +37,7 @@ def command(celery_args):
     )
     celery_app_var = re.search(r":(\w+)\s", celery_config_line).group(1)
     celery_path = f"{celery_config_module}:{celery_app_var}"
-    click.secho(f"Automatically found celery config in {celery_path=}", fg="green")
+    logging.info(f"Automatically found celery config --app={celery_path}")
     os.execlp("celery", f"--app={celery_path}", *celery_args)
 
 
