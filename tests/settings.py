@@ -20,7 +20,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = []  # type: ignore
+THIRD_PARTY_APPS = ["django_extensions"]  # type: ignore
 
 LOCAL_APPS = ["django_toolshed", "tests"]
 
@@ -57,3 +57,6 @@ STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = Path(__file__).parent / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

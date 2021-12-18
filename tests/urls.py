@@ -13,6 +13,10 @@ urlpatterns = [
         },
     ),
     path(
+        "celery/",
+        include("django_toolshed.celery_urls", namespace="celery"),
+    ),
+    path(
         "",
         include("django_toolshed.urls", namespace="django_tools"),
     ),

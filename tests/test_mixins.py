@@ -11,6 +11,6 @@ def test_renders_admin_link(admin_client):
     user = User.objects.first()
     Property.objects.create(owner=user)
     res = admin_client.get(reverse("admin:tests_property_changelist"))
-    soup = BeautifulSoup(res.content)
+    soup = BeautifulSoup(res.content, features="html5lib")
     link = soup.select_one(".related-link")
     assert link.attrs["href"] == reverse("admin:auth_user_change", args=[user.id])
