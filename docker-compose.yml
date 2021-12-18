@@ -1,0 +1,6 @@
+---
+version: '2.4'
+services:
+  redis:
+    image: redis
+    network_mode: host
