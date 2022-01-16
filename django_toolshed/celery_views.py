@@ -1,3 +1,5 @@
+import logging
+
 from celery import current_app
 from celery.result import AsyncResult
 from rest_framework import serializers
@@ -25,9 +27,12 @@ class CeleryTaskViewSet(ViewSet):
         serializer.is_valid(raise_exception=True)
         task_name = serializer.data["task_name"]
         worker_tasks = registered_tasks()
+        task_arguments = serializer.data
+        task_arguments.pop("task_name")
         if task_name not in worker_tasks:
             raise NotFound(f"{task_name=} not found in registered {worker_tasks=}")
-        sent_task = current_app.send_task(task_name, **serializer.data)
+        sent_task = current_app.send_task(task_name, **task_arguments)
+        logging.info(f"Triggered celery {task_name=} with {task_arguments=}")
         return Response(
             data={**serializer.data, "task_id": sent_task.task_id}, status=201
         )
@@ -37,6 +42,7 @@ class TaskTypesView(APIView):
     # pylint: disable=redefined-builtin,unused-argument
     def get(self, request, format=None):
         worker_tasks = registered_tasks()
+        # Return trigger url
         return Response({"task_types": worker_tasks})
 
 
