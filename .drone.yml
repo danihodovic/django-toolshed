@@ -2,6 +2,9 @@
 kind: pipeline
 type: docker
 name: default
+trigger:
+  event:
+    - push
 
 volumes:
   - name: cache
