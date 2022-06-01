@@ -1,7 +1,9 @@
 import time
 
+import pytest
 from django.urls import reverse
 
+pytestmark = pytest.mark.django_db
 
 # A worker needs to run for Celery to find registered tasks
 # pylint: disable=unused-argument
@@ -49,7 +51,7 @@ def test_retrieve_nonexisting_task(api_client, celery_worker):
     }
 
 
-def test_task_types(api_client, celery_worker):
+def test_task_types_view(api_client, celery_worker):
     url = reverse("celery:task-types")
     res = api_client.get(url)
     assert res.status_code == 200

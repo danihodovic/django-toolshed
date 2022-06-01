@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from rest_framework.test import APIClient
 
@@ -9,4 +11,7 @@ def api_client():
 
 @pytest.fixture(scope="session")
 def celery_config():
-    return {"broker_url": "redis://localhost:6379"}
+    broker_host = "localhost"
+    if os.path.isfile("/.dockerenv"):
+        broker_host = "redis"
+    return {"broker_url": f"redis://{broker_host}:6379"}
