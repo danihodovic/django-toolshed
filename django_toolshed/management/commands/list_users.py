@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "List installed django apps"
+    help = "List users"
 
     def handle(self, *args, **options):
         for user in User.objects.all():
