@@ -3,9 +3,9 @@ import logging
 from celery import current_app
 from celery.result import AsyncResult
 from rest_framework import serializers
+from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 
 
@@ -37,12 +37,9 @@ class CeleryTaskViewSet(ViewSet):
             data={**serializer.data, "task_id": sent_task.task_id}, status=201
         )
 
-
-class TaskTypesView(APIView):
-    # pylint: disable=redefined-builtin,unused-argument
-    def get(self, request, format=None):
+    @action(detail=False, methods=["GET"])
+    def types(self, request):
         worker_tasks = registered_tasks()
-        # Return trigger url
         return Response({"task_types": worker_tasks})
 
 

@@ -11,6 +11,10 @@ volumes:
     host:
       path: /tmp/drone-cache
 
+services:
+  - name: redis
+    image: redis:6-alpine
+
 steps:
   - name: restore-cache
     image: meltwater/drone-cache:dev
