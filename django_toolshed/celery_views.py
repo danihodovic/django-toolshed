@@ -18,6 +18,8 @@ class TaskSerializer(serializers.Serializer):
 
 # pylint: disable=no-self-use
 class CeleryTaskViewSet(ViewSet):
+    serializer_class = TaskSerializer
+
     def retrieve(self, request, pk=None):
         result = AsyncResult(pk)
         return Response(dict(task_id=result.task_id, status=result.status))
