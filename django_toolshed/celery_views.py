@@ -1,7 +1,11 @@
+# pylint: disable=abstract-method
 import logging
 
 from celery import current_app
 from celery.result import AsyncResult
+from celery.states import ALL_STATES
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import serializers
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, ParseError
@@ -9,35 +13,68 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 
-# pylint: disable=abstract-method
-class TaskSerializer(serializers.Serializer):
+class CreateTaskSerializer(serializers.Serializer):
     task_name = serializers.CharField()
     args = serializers.ListField(required=False)
     kwargs = serializers.DictField(required=False)
 
 
-# pylint: disable=no-self-use
+class ReadTaskSerializer(serializers.Serializer):
+    task_id = serializers.CharField()
+    status = serializers.ChoiceField(choices=ALL_STATES)
+
+
 class CeleryTaskViewSet(ViewSet):
-    serializer_class = TaskSerializer
+    serializer_class = None
 
-    def retrieve(self, request, pk=None):
-        result = AsyncResult(pk)
-        return Response(dict(task_id=result.task_id, status=result.status))
+    @extend_schema(
+        operation_id="read_task_status",
+        parameters=[
+            OpenApiParameter(
+                name="id", type=OpenApiTypes.UUID, location=OpenApiParameter.PATH
+            )
+        ],
+        responses={200: ReadTaskSerializer},
+    )
+    def retrieve(self, request, pk=None, **kwargs):
+        async_result = AsyncResult(pk)
+        serializer = ReadTaskSerializer(
+            data=dict(
+                task_id=async_result.task_id,
+                status=async_result.status,
+            )
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
+    @extend_schema(
+        operation_id="create_task",
+        request=CreateTaskSerializer,
+        responses={201: ReadTaskSerializer},
+    )
     def create(self, request):
-        serializer = TaskSerializer(data=request.data)
+        serializer = CreateTaskSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         task_name = serializer.data["task_name"]
+
         worker_tasks = registered_tasks()
-        task_arguments = serializer.data
-        task_arguments.pop("task_name")
         if task_name not in worker_tasks:
             raise NotFound(f"{task_name=} not found in registered {worker_tasks=}")
-        sent_task = current_app.send_task(task_name, **task_arguments)
-        logging.info(f"Triggered celery {task_name=} with {task_arguments=}")
-        return Response(
-            data={**serializer.data, "task_id": sent_task.task_id}, status=201
+
+        async_result = current_app.send_task(
+            name=task_name,
+            args=serializer.data.get("args"),
+            kwargs=serializer.data.get("kwargs"),
         )
+        logging.info(f"Triggered celery {task_name=} via HTTP request")
+        serializer = ReadTaskSerializer(
+            data=dict(
+                task_id=async_result.task_id,
+                status=async_result.status,
+            )
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=201)
 
     @action(detail=False, methods=["GET"])
     def types(self, request):

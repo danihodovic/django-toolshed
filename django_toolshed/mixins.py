@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 
-class UserURLMixin:  # pylint: disable=too-few-public-methods,no-self-use
+class UserURLMixin:  # pylint: disable=too-few-public-methods
     def user_url(self, obj):
         if not obj.user:
             return "-"

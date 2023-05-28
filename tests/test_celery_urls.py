@@ -5,6 +5,7 @@ from django.urls import reverse
 
 pytestmark = pytest.mark.django_db
 
+
 # A worker needs to run for Celery to find registered tasks
 # pylint: disable=unused-argument
 def test_triggers_task(api_client, celery_worker):
@@ -12,9 +13,8 @@ def test_triggers_task(api_client, celery_worker):
     res = api_client.post(url, dict(task_name="tests.celery_app.debug_task"))
     assert res.status_code == 201, res.data
     assert res.data == {
-        "task_name": "tests.celery_app.debug_task",
-        "kwargs": {},
         "task_id": res.data["task_id"],
+        "status": "PENDING",
     }
 
 
