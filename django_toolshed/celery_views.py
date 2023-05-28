@@ -12,6 +12,9 @@ from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+# Avoid re-generating API docs and API clients
+celery_states = [(v, v) for v in sorted(ALL_STATES)]
+
 
 class CreateTaskSerializer(serializers.Serializer):
     task_name = serializers.CharField()
@@ -21,7 +24,7 @@ class CreateTaskSerializer(serializers.Serializer):
 
 class ReadTaskSerializer(serializers.Serializer):
     task_id = serializers.CharField()
-    status = serializers.ChoiceField(choices=ALL_STATES)
+    status = serializers.ChoiceField(choices=celery_states)
 
 
 class CeleryTaskViewSet(ViewSet):
