@@ -14,7 +14,7 @@ def test_triggers_task(api_client, celery_worker):
     assert res.status_code == 201, res.data
     assert res.data == {
         "task_id": res.data["task_id"],
-        "status": "PENDING",
+        "status": "pending",
     }
 
 
@@ -35,11 +35,11 @@ def test_retrieves_task(api_client, celery_worker):
     res = api_client.get(url)
     assert {
         "task_id": res.data["task_id"],
-        "status": "PENDING",
+        "status": "pending",
     } == res.data
     time.sleep(1)
     res = api_client.get(url)
-    assert res.data["status"] == "SUCCESS"
+    assert res.data["status"] == "success"
 
 
 def test_retrieve_nonexisting_task(api_client, celery_worker):
@@ -47,7 +47,7 @@ def test_retrieve_nonexisting_task(api_client, celery_worker):
     res = api_client.get(url)
     assert res.data == {
         "task_id": "b4f284de-6695-4dfa-9083-36b937cbd0ef",
-        "status": "PENDING",
+        "status": "pending",
     }
 
 
